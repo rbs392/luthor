@@ -2,12 +2,23 @@
 var page 	= require('webpage').create()
 var server 	= require('webserver').create() 
 var system 	= require('system')
+
+//config need to be from env/args
+//TODO: why not timeout through query params
 var timeout = 3000
-var fetchTimeout = 1
+var fetchTimeout = 4
 
 var requestArr 	= []
 var responseArr = []
 
+page.settings.localToRemoteUrlAccessEnabled = true
+page.settings.webSecurityEnabled 			= false
+page.settings.resourceTimeout 				= fetchTimeout*1000
+
+page.viewportSize = {
+  width: 1200,
+  height: 720
+};
 
 if(system.args.length!==2){
 	console.log('Usage: server.js <some port>')
@@ -32,8 +43,10 @@ function requestHandler(request, response){
 		response.close()
 	}else{
 		page.open(params.url, pageHandler.bind(this,params.url, request, response))
+		page.onError 				= onError.bind(this, response)
 		page.onResourceRequested 	= onResourceRequested
 		page.onResourceReceived 	= onResourceReceived
+		page.onResourceError 		= onResourceError.bind(this, response)
 	}
 }
 
@@ -44,13 +57,15 @@ function formatQueryParams(params){
 	return result
 }
 
+function returnFetchedPage(interval, response){
+	clearInterval(interval)
+	response.statusCode = 200
+	response.write(page.content)
+	response.close()
+	// page.close not needed as it is continuous process
+}
+
 function pageHandler(url, request, response, status){
-	function returnFetchedPage(interval){
-		clearInterval(interval)
-		response.statusCode = 200
-		response.write(page.content)
-		response.close()
-	}
 	
 	var flag = true
 	if(!status){
@@ -59,12 +74,13 @@ function pageHandler(url, request, response, status){
 	}else{
 		var retryCount = 0
 		var interval = setInterval(function(){
+			console.log(requestArr.length)
 			
 			if(retryCount>fetchTimeout)
-				returnFetchedPage(interval)
+				returnFetchedPage(interval, response, page)
 
 			if(requestArr.length<=0)
-				returnFetchedPage(interval)
+				returnFetchedPage(interval, response, page)
 			
 			retryCount++
 		}, 1000)
@@ -81,4 +97,23 @@ function  onResourceReceived(data){
 		var index = requestArr.indexOf(data.url)
 		requestArr.splice(index, 1)
 	}
+}
+
+function onResourceError(response, resourceErr){
+	//Better handle resource errors
+	response.statusCode = 500
+	response.write("Unable to fetch url -"+ resourceErr.url)
+	response.close()
+	
+	var index = requestArr.indexOf(resourceErr.url)
+	requestArr.splice(index, 1)
+}
+
+function onError(response, msg, trace){
+	console.log("msg")
+	// response.statusCode = 500
+	// response.write(msg)
+	// response.write(trace)
+	// response.close()
+
 }
