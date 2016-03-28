@@ -3,6 +3,7 @@ var page 	= require('webpage').create()
 var server 	= require('webserver').create() 
 var system 	= require('system')
 var timeout = 3000
+var fetchTimeout = 1
 
 var requestArr 	= []
 var responseArr = []
@@ -33,7 +34,6 @@ function requestHandler(request, response){
 		page.open(params.url, pageHandler.bind(this,params.url, request, response))
 		page.onResourceRequested 	= onResourceRequested
 		page.onResourceReceived 	= onResourceReceived
-		page.onLoadFinished 		= onLoadFinished
 	}
 }
 
@@ -45,22 +45,29 @@ function formatQueryParams(params){
 }
 
 function pageHandler(url, request, response, status){
+	function returnFetchedPage(interval){
+		clearInterval(interval)
+		response.statusCode = 200
+		response.write(page.content)
+		response.close()
+	}
+	
 	var flag = true
 	if(!status){
 		response.statusCode = 500
 		response.write("Fetch failed for the url - "+url)
 	}else{
+		var retryCount = 0
 		var interval = setInterval(function(){
-			if(requestArr.length<=0){
-				
-				clearInterval(interval)
-				
-				response.statusCode = 200
-				response.write(page.content)
-				response.close()
-			}
-			console.log(requestArr)
-		}, 2000)
+			
+			if(retryCount>fetchTimeout)
+				returnFetchedPage(interval)
+
+			if(requestArr.length<=0)
+				returnFetchedPage(interval)
+			
+			retryCount++
+		}, 1000)
 	}
 
 }
@@ -74,11 +81,4 @@ function  onResourceReceived(data){
 		var index = requestArr.indexOf(data.url)
 		requestArr.splice(index, 1)
 	}
-}
-
-function onLoadFinished(status){
-	console.log("status")
-	console.log(status)
-	console.log(requestArr.length)
-	console.log(responseArr.length)
 }
