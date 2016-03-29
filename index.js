@@ -7,21 +7,6 @@ var spawn 	= process.spawn
 
 var fetchTimeout 	= 4
 
-if(system.args.length!==2){
-	console.log('Usage: server.js <some port>')
-    phantom.exit(1)
-}else{
-	var port = system.args[1]
-
-	var listening = server.listen(port, requestHandler)
-
-	if(!listening){
-		console.log("Could not create webserver on port "+port)
-		phantom.exit()
-	}
-	console.log("Server started at port "+ port)
-}
-
 function requestHandler(request, response){
 	switch(request.method){
 		case 'GET': getRequestHandler(request, response)
@@ -43,11 +28,7 @@ function postRequestHandler(request, response){
 		response.write("Invalid post body - HTML required ")
 		response.close()
 	}else{
-		execWorker("post", params.url, request.post)
-		// page.onResourceRequested 	= onResourceRequested
-		// page.onResourceReceived 	= onResourceReceived
-		// page.onResourceError 		= onResourceError.bind(this, response)
-		// pageHandler(params.url, request, response, true)
+		execWorker(request, response, "post", params.url, request.post)
 	}
 }
 
@@ -58,7 +39,7 @@ function getRequestHandler(request, response){
 		response.write("Invalid url query param")
 		response.close()
 	}else{
-		execWorker("get", params.url)
+		execWorker(request, response, "get", params.url)
 	}
 
 }
@@ -76,28 +57,48 @@ function formatQueryParams(params){
 	return result
 }
 
-function execWorker(type, url, data){
+function execWorker(request, response, type, url, data){
 	var successdata = ""
 	var errordata 	= ""
 	var child 		= spawn('phantomjs', ["worker.js", type, url, data])
 
-	child.stdout.on("data", function(request, response, data){
-		console.log(data)
-		response.statusCode = 200
-		response.write(data)
-		response.close()
-	}.bind(this, request, response))
+	child.stdout.on("data", function(data){
+		successdata += data  
+	})
 
-	child.stderr.on("data", function(request, response, data){
-		console.log(data)
-		response.statusCode =500
+	child.stderr.on("data", function(data){
+		errordata += data
+	})
+	// child.kill('SIGKILL')
+	child.on('exit', function(code){
+		var data = ""
+		if(errordata){
+			response.statusCode = 500
+			data = errordata
+		}else{
+			response.statusCode = 200
+			data = successdata
+		}
 		response.write(data)
 		response.close()
-	}.bind(this, request, response))
-	// child.kill('SIGKILL')
-	child.on('exit', function(request, response, code){
-		console.log("exit triggered =================================?>>>>>>>>>>>>>>>")
-		
 	})
 
 }
+
+function init(){
+	if(system.args.length!==2){
+		console.log('Usage: server.js <some port>')
+	    phantom.exit(1)
+	}else{
+		var port = system.args[1]
+
+		var listening = server.listen(port, requestHandler)
+
+		if(!listening){
+			console.log("Could not create webserver on port "+port)
+			phantom.exit()
+		}
+		console.log("Server started at port "+ port)
+	}
+}
+init()

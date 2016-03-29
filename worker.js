@@ -70,7 +70,6 @@ function returnFetchedPage(interval, page){
 	clearInterval(interval)
 	console.log(page.content)
 	phantom.exit(0)
-	phantom.kill('SIGTERM')
 }
 
 
@@ -84,7 +83,6 @@ function postHandler(data, url){
 }
 
 function init(){
-	console.log("init")
 	switch(type){
 		case 'get': getHandler(url)
 		break;
