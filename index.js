@@ -1,24 +1,11 @@
 "use strict"
-var page 	= require('webpage').create()
 var server 	= require('webserver').create() 
 var system 	= require('system')
+var process = require('child_process')
+var spawn 	= process.spawn
 
-//config need to be from env/args
-//TODO: why not timeout through query params
-var timeout = 3000
-var fetchTimeout = 4
 
-var requestArr 	= []
-var responseArr = []
-
-page.settings.localToRemoteUrlAccessEnabled = true
-page.settings.webSecurityEnabled 			= false
-page.settings.resourceTimeout 				= fetchTimeout*1000
-
-page.viewportSize = {
-  width: 1200,
-  height: 720
-};
+var fetchTimeout 	= 4
 
 if(system.args.length!==2){
 	console.log('Usage: server.js <some port>')
@@ -36,18 +23,50 @@ if(system.args.length!==2){
 }
 
 function requestHandler(request, response){
+	switch(request.method){
+		case 'GET': getRequestHandler(request, response)
+		break;
+		case 'POST': postRequestHandler(request, response)
+		break;
+		default: invalidRequestHandler(request, response)
+	}
+}
+
+function postRequestHandler(request, response){
+	var params = formatQueryParams(request.url)
+	if(!params.url){
+		response.statusCode = 500
+		response.write("Invalid url query param")
+		response.close()
+	}else if(!request.post){
+		response.statusCode = 500
+		response.write("Invalid post body - HTML required ")
+		response.close()
+	}else{
+		execWorker("post", params.url, request.post)
+		// page.onResourceRequested 	= onResourceRequested
+		// page.onResourceReceived 	= onResourceReceived
+		// page.onResourceError 		= onResourceError.bind(this, response)
+		// pageHandler(params.url, request, response, true)
+	}
+}
+
+function getRequestHandler(request, response){
 	var params = formatQueryParams(request.url)
 	if(!params.url){
 		response.statusCode = 500
 		response.write("Invalid url query param")
 		response.close()
 	}else{
-		page.open(params.url, pageHandler.bind(this,params.url, request, response))
-		page.onError 				= onError.bind(this, response)
-		page.onResourceRequested 	= onResourceRequested
-		page.onResourceReceived 	= onResourceReceived
-		page.onResourceError 		= onResourceError.bind(this, response)
+		execWorker("get", params.url)
 	}
+
+}
+
+function invalidRequestHandler(request, response){
+	response.statusCode = 500
+	response.write("Invalid operation use GET or POST method")
+	response.close()
 }
 
 function formatQueryParams(params){
@@ -57,63 +76,28 @@ function formatQueryParams(params){
 	return result
 }
 
-function returnFetchedPage(interval, response){
-	clearInterval(interval)
-	response.statusCode = 200
-	response.write(page.content)
-	response.close()
-	// page.close not needed as it is continuous process
-}
+function execWorker(type, url, data){
+	var successdata = ""
+	var errordata 	= ""
+	var child 		= spawn('phantomjs', ["worker.js", type, url, data])
 
-function pageHandler(url, request, response, status){
-	
-	var flag = true
-	if(!status){
-		response.statusCode = 500
-		response.write("Fetch failed for the url - "+url)
-	}else{
-		var retryCount = 0
-		var interval = setInterval(function(){
-			console.log(requestArr.length)
-			
-			if(retryCount>fetchTimeout)
-				returnFetchedPage(interval, response, page)
+	child.stdout.on("data", function(request, response, data){
+		console.log(data)
+		response.statusCode = 200
+		response.write(data)
+		response.close()
+	}.bind(this, request, response))
 
-			if(requestArr.length<=0)
-				returnFetchedPage(interval, response, page)
-			
-			retryCount++
-		}, 1000)
-	}
-
-}
-
-function onResourceRequested(data, networkRequest){
-	requestArr.push(data.url)
-}
-
-function  onResourceReceived(data){
-	if(data.stage==='end'){
-		var index = requestArr.indexOf(data.url)
-		requestArr.splice(index, 1)
-	}
-}
-
-function onResourceError(response, resourceErr){
-	//Better handle resource errors
-	response.statusCode = 500
-	response.write("Unable to fetch url -"+ resourceErr.url)
-	response.close()
-	
-	var index = requestArr.indexOf(resourceErr.url)
-	requestArr.splice(index, 1)
-}
-
-function onError(response, msg, trace){
-	console.log("msg")
-	// response.statusCode = 500
-	// response.write(msg)
-	// response.write(trace)
-	// response.close()
+	child.stderr.on("data", function(request, response, data){
+		console.log(data)
+		response.statusCode =500
+		response.write(data)
+		response.close()
+	}.bind(this, request, response))
+	// child.kill('SIGKILL')
+	child.on('exit', function(request, response, code){
+		console.log("exit triggered =================================?>>>>>>>>>>>>>>>")
+		
+	})
 
 }
