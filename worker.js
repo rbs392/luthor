@@ -40,7 +40,6 @@ function  onResourceReceived(data){
 }
 
 function onResourceError(resourceErr){
-	console.error("Unable to fetch url -"+ resourceErr.url)
 	var index = requestArr.indexOf(resourceErr.url)
 	requestArr.splice(index, 1)
 }
