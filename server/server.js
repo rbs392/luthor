@@ -29,4 +29,8 @@ function init(){
 		console.log("Server started at port "+ port)
 	}
 }
-init()
+
+//start here
+module.exports = {
+	"start" : init
+}

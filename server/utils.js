@@ -1,3 +1,4 @@
+"use strict"
 var process = require('child_process')
 var spawn 	= process.spawn
 
@@ -12,10 +13,24 @@ var utils = {
 	"execWorker" : function(request, response, type, url, data){
 		var successdata = ""
 		var errordata 	= ""
-		var child 		= spawn('phantomjs', ["worker.js", type, url, data])
+		var child 		= spawn('phantomjs', ["./worker/worker.js", type, url, data])
+		utils.logger("START", url)
+
 
 		child.stdout.on("data", function(data){
-			successdata += data  
+			var htmlStarted = false
+			
+			if(/ERROR/.test(data)){
+				utils.logger("FETCH INCOMPLETE", url)
+			}
+			
+			if(/^<.*/.test(data)){
+				htmlStarted = true
+			}
+
+			if(htmlStarted){
+				successdata += data
+			}
 		})
 
 		child.stderr.on("data", function(data){
@@ -26,14 +41,25 @@ var utils = {
 			if(errordata){
 				response.statusCode = 500
 				data = errordata
-			}else{
+				utils.logger("ERROR", errordata)
+			}else if(successdata){
 				response.statusCode = 200
 				data = successdata
+				utils.logger("SUCCESS", url)
+			}else{
+				response.statusCode = 500
+				data = "No data recieved"
+				utils.logger("FAILURE", url)
 			}
 			response.write(data)
 			response.close()
 		})
 
+	},
+
+	"logger" : function(type, message){
+		var date = Date().toString()
+		console.log(date+" : "+type.toUpperCase()+" : "+message)
 	}
 }
 
