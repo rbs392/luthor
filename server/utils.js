@@ -13,22 +13,24 @@ var utils = {
 	"execWorker" : function(request, response, type, url, data){
 		var successdata = ""
 		var errordata 	= ""
+		var htmlPresent = false
 		var child 		= spawn('phantomjs', ["./worker/worker.js", type, url, data])
 		utils.logger("START", url)
 
 
 		child.stdout.on("data", function(data){
-			var htmlStarted = false
-			
 			if(/ERROR/.test(data)){
 				utils.logger("FETCH INCOMPLETE", url)
 			}
 			
-			if(/^<.*/.test(data)){
-				htmlStarted = true
+			if(/<html.*/.test(data)){
+				htmlPresent = true
+			}else if(/<\/html>/.test(data)){
+				htmlPresent = false
+				successdata += data
 			}
 
-			if(htmlStarted){
+			if(htmlPresent){
 				successdata += data
 			}
 		})

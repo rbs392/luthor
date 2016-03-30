@@ -10,7 +10,7 @@ module.exports = {
   "userAgent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36",
   "viewPort": { "width": 1440, "height": 718 },
   "resourceTimeout":4,
-  "maxRetries": 4,
+  "maxRetries": 5,
   "blockedResources": [
     "google-analytics.com",
     "api.mixpanel.com",

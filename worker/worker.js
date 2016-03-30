@@ -19,6 +19,14 @@ var requestArr 		= []
 var maxRetries 		= config.maxRetries
 
 function onResourceRequested(data, networkRequest){
+	var abort = false
+	config.blockedResources.forEach(function(blockedUrl){
+		var regexp = new RegExp(blockedUrl)
+		abort = regexp.test(data.url)
+	})
+	if(abort){
+		networkRequest.abort()
+	}
 	requestArr.push(data.url)
 }
 
