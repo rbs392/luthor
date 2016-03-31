@@ -93,7 +93,6 @@ function init(){
 
 	page.settings.resourceTimeout 	= config.resourceTimeout*1000
 	page.settings.userAgent 		= config.userAgent
-	page.settings.loadImage  		= config.loadImage
 
 	page.viewportSize = config.viewPort
 
