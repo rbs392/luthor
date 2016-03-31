@@ -1,9 +1,10 @@
 {
-	"load-images": "false",
-	"local-to-remote-url-access": "true",
-	"web-security": "false",
-	"ignore-ssl-errors": "true",
-	"ssl-protocol": "tlsv1",
-	"disk-cache": "true",
-	"max-disk-cache-size": "256000"
+	"autoLoadImages": false,
+	"localToRemoteUrlAccessEnabled": true,
+	"webSecurityEnabled": false,
+	"ignoreSslErrors": true,
+	"sslProtocol": "TLSv1",
+	"diskCacheEnabled": true,
+	"maxDiskCacheSize": 256000,
+	"printDebugMessages": false
 }
