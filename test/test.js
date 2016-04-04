@@ -122,29 +122,191 @@ var urls = [
 	"http://www.perriconemd.com/customer-service/customer-care.html",
 	"http://www.perriconemd.com/serious-about-beauty/perricone-beauty-2.html",
 	"http://www.perriconemd.com/customer-service/contact-us.html",
+	"http://www.netaya.com/rings",
+	"http://www.netaya.com/bridal/engagement-rings",
+	"http://www.netaya.com/rings/diamond-rings",
+	"http://www.netaya.com/rings/gemstone-rings",
+	"http://www.netaya.com/earrings",
+	"http://www.netaya.com/earrings/gemstone-earrings",
+	"http://www.netaya.com/blue-diamond-stud-earrings",
+	"http://www.netaya.com/earrings/diamond-earrings",
+	"http://www.netaya.com/bracelets",
+	"http://www.netaya.com/bracelets/diamond-bracelets",
+	"http://www.netaya.com/bracelets/gemstone-bracelets",
+	"http://www.netaya.com/bracelets/gold-bracelets",
+	"http://www.netaya.com/necklaces",
+	"http://www.netaya.com/discover-browse/occasions",
+	"http://www.netaya.com/discover-browse/colors",
+	"http://www.netaya.com/discover-browse/birthstone",
+	"http://www.netaya.com/discover-browse/fit-for-me",
+	"http://www.netaya.com/collections",
+	"http://www.netaya.com/gifting",
+	"http://www.netaya.com/clearance",
+	"http://www.netaya.com/bridal",
+	"http://www.netaya.com/rings/fashion-rings",
+	"http://www.netaya.com/rings/bridal",
+	"http://www.netaya.com/earrings/fashion-earrings",
+	"http://www.netaya.com/bracelets/tennis-bracelets",
+	"http://www.netaya.com/bracelets/fashion-bracelets",
+	"http://www.netaya.com/bridal/womens-wedding-bands",
+	"http://www.netaya.com/bridal/mens-wedding-bands",
+	"http://www.netaya.com/bridal/wedding-gifts",
+	"http://www.netaya.com/collections/mens-collection",
+	"http://www.netaya.com/collections/charm-collection",
+	"http://www.netaya.com/collections/cameo-collection",
+	"http://www.netaya.com/gifting/gifts-under-50",
+	"http://www.netaya.com/gifting/gifts-under-100",
+	"http://www.netaya.com/gifting/gifts-100-500",
+	"http://www.netaya.com/gifting/gifts-above-500",
+	"http://www.netaya.com/dazzlingdeals",
+	"http://www.netaya.com/styles-we-love",
+	"http://www.netaya.com/mother-s-day",
+	"http://www.netaya.com/collections/grazie-italiana",
+	"http://www.netaya.com/new-arrivals",
+	"http://www.netaya.com/collections/design-by-sepi",
+	"http://www.netaya.com/bradsdeals",
+	"http://www.netaya.com/summer-sale",
+	"http://www.netaya.com/collections/endless-harmony",
+	"http://www.netaya.com/collections/diamond-miracles",
+	"http://www.netaya.com/sample-sale",
+	"http://www.netaya.com/fall-sale",
+	"http://www.netaya.com/london-blue-topaz-sale",
+	"http://www.netaya.com/top-10-diamond-stud-earrings",
+	"http://www.netaya.com/earrings/gold-hoop-earrings",
+	"http://www.netaya.com/black-friday-sale",
+	"http://www.netaya.com/brads-deals",
+	"http://www.netaya.com/12-12-sale",
+	"http://www.netaya.com/60-off-year-end-sale",
+	"http://www.netaya.com/gifting/garnet-collection",
+	"http://www.netaya.com/valentine-s-day-gifts",
+	"http://www.netaya.com/fall-liquidation-event",
+	"http://www.netaya.com/private-vip-sale",
+	"http://www.netaya.com/collections/mia-by-netaya",
+	"http://www.netaya.com/flip-flop-pendant-sale",
+	"http://www.netaya.com/weekend-diamond-sale",
+	"http://www.netaya.com/yellow-diamond-stud-earrings",
+	"http://www.netaya.com/necklaces/gold-chains",
+	"http://www.netaya.com/featured-deals",
+	"http://www.netaya.com/newandpopular",
+	"http://www.netaya.com/thanksgiving-sale",
+	"http://www.netaya.com/collections/easter-sale",
+	"http://www.netaya.com/14k-wg-diamond-swirl-ring",
+	"http://www.netaya.com/14k-wg-diamond-wave-ring",
+	"http://www.netaya.com/14k-fancy-bracelet-7",
+	"http://www.netaya.com/black-shamballa-bracelet-8",
+	"http://www.netaya.com/black-shamballa-bracelet-7",
+	"http://www.netaya.com/14k-yellow-gold-box-chain-20",
+	"http://www.netaya.com/14k-yellow-gold-box-chain-18",
+	"http://www.netaya.com/14k-yellow-gold-box-chain-24",
+	"http://www.netaya.com/oval-pin-pendant-1-1-4-x-7-8",
+	"http://www.netaya.com/oval-pendant-1-x-3-4",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2",
+	"http://www.netaya.com/oval-pendant-3-4-x1-2",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-1",
+	"http://www.netaya.com/oval-pendant-1-x-3-4-1",
+	"http://www.netaya.com/oval-pendant-3-4-x1-2-1",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-2",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-3",
+	"http://www.netaya.com/oval-pendant-3-4-x1-2-2",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-4",
+	"http://www.netaya.com/oval-pendant-3-4-x1-2-3",
+	"http://www.netaya.com/oval-pendant-3-4-x1-2-4",
+	"http://www.netaya.com/oval-pendant-3-4-x1-2-5",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-5",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-6",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-7",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-8",
+	"http://www.netaya.com/oval-pendant-3-4-x-1-2-9",
+	"http://www.netaya.com/14k-yg-1-00ct-diamond-ring",
+	"http://www.netaya.com/14k-wg-diamond-ring-2",
+	"http://www.netaya.com/0-75ctw-diamond-ring",
+	"http://www.netaya.com/14k-yg-diamond-pinky-ring",
+	"http://www.netaya.com/18k-silver-cz-citrine-ring",
+	"http://www.netaya.com/tanzanite-ring",
+	"http://www.netaya.com/sterling-18k-citrine-ring",
+	"http://www.netaya.com/sterling-18k-blue-topaz-ring",
+	"http://www.netaya.com/tanzanite-ring-1",
+	"http://www.netaya.com/pink-sapphire-ring",
+	"http://www.netaya.com/4ssrr1rs-07",
+	"http://www.netaya.com/sterling-silver-purity-ring",
+	"http://www.netaya.com/tanazanite-ring",
+	"http://www.netaya.com/tanazanite-4x3-oval-ring",
+	"http://www.netaya.com/tanzanite-ring-2",
+	"http://www.netaya.com/blue-diamond-ring",
+	"http://www.netaya.com/sterling-silver-dolphin-ring",
+	"http://www.netaya.com/stainless-steel-fashion-ring",
+	"http://www.netaya.com/stainless-steel-cable-ring",
+	"http://www.netaya.com/stainless-steel-cable-ring-1",
+	"http://www.netaya.com/men-s-stainless-steel-ring",
+	"http://www.netaya.com/tanazanite-ring-1",
+	"http://www.netaya.com/stainless-steel-flower-ring",
+	"http://www.netaya.com/14k-yellow-gold-diamond-band",
+	"http://www.netaya.com/14k-white-gold-diamond-band",
+	"http://www.netaya.com/sterling-silver-ring-1",
+	"http://www.netaya.com/sterling-silver-girl-charm",
+	"http://www.netaya.com/sterling-silver-boy-charm",
+	"http://www.netaya.com/sterling-silver-cat-charm",
+	"http://www.netaya.com/test-ring-test",
+	"http://www.netaya.com/pink-fashion-necklace-18",
+	"http://www.netaya.com/blue-fashion-dangle-earrings",
+	"http://www.netaya.com/green-fashion-drop-earrings",
+	"http://www.netaya.com/red-fashion-drop-earrings",
+	"http://www.netaya.com/test-diamond-earrings",
+	"http://www.netaya.com/14k-yellow-gold-wedding-band",
+	"http://www.netaya.com/about-magento-demo-store",
+	"http://www.netaya.com/customer-service",
+	"http://www.netaya.com/enable-cookies",
+	"http://www.netaya.com/service-unavailable",
+	"http://www.netaya.com/private-sales",
+	"http://www.netaya.com/buyers-guide",
+	"http://www.netaya.com/the-value-calculator",
+	"http://www.netaya.com/the-netaya-story",
+	"http://www.netaya.com/faq",
+	"http://www.netaya.com/netaya-gives-back",
+	"http://www.netaya.com/the-right-choice",
+	"http://www.netaya.com/careers",
+	"http://www.netaya.com/shipping-policy-and-rates",
+	"http://www.netaya.com/order-status",
+	"http://www.netaya.com/live-chat",
+	"http://www.netaya.com/financing",
+	"http://www.netaya.com/return-instructions",
+	"http://www.netaya.com/cancellation-policy",
+	"http://www.netaya.com/secure-shopping",
+	"http://www.netaya.com/repairs-after-warranty",
+	"http://www.netaya.com/privacy-and-terms",
+	"http://www.netaya.com/home",
+	"http://www.netaya.com/30-day-returns",
+	"http://www.netaya.com/terms-of-use",
+	"http://www.netaya.com/terms-conditions",
+	"http://www.netaya.com/cyber-monday-is-back",
 	"http://www.perriconemd.com/brand/affiliate-program.html"
 ]
-urls.forEach(function(url, index){
-	setTimeout(function(){
-		var date = new Date()
-		http.get("http://localhost:3000/fetch?url="+url,function(res){
-			if(res.statusCode == 200)
-				console.log("HULK:"+url+"  ---------> "+(new Date()-date))
-			else
-				console.log("HULK:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")
-			
-		}).on('error', function(err){
-			console.log("HULK:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")
-		})
+var i = urls.length
+var end = urls.length + 100
+while(i<=end){
+	urls.forEach(function(url, index){
+		setTimeout(function(){
+			var date = new Date()
+			// http.get("http://localhost:3000/fetch?url="+url,function(res){
+			// 	if(res.statusCode == 200)
+			// 		console.log("HULK:"+url+"  ---------> "+(new Date()-date))
+			// 	else
+			// 		console.log("HULK:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")
+				
+			// }).on('error', function(err){
+			// 	console.log("HULK:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")
+			// })
 
-		http.get("http://localhost:8888/fetch?url="+url,function(res){
-			if(res.statusCode)
-				console.log("LUTHOR:"+url+"  ---------> "+(new Date()-date))
-			else
-				console.log("LUTHOR:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")	
-			
-		}).on('error', function(err){
-			console.log("LUTHOR:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")
-		})
-	},index*100)
-})
+			http.get("http://localhost:8888/fetch?url="+url,function(res){
+				if(res.statusCode)
+					console.log("LUTHOR:"+url+"  ---------> "+(new Date()-date))
+				else
+					console.log("LUTHOR:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")	
+				
+			}).on('error', function(err){
+				console.log("LUTHOR:"+url+"  ---------> "+(new Date()-date) + "-----FAIL------")
+			})
+		},i*index*1000)
+	})
+	i++	
+}
