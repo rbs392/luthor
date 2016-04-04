@@ -64,11 +64,11 @@ var utils = {
 				data = "No data recieved"
 				utils.logger("FAILURE", url)
 			}
+			response.write(data)
+			response.close()
 			fs.write('./outputLog/result', response.statusCode+"\t\t\t"+reqData.length+"\t\t\t"+data.length+"\t"+url+"\n", 'a')
 			fs.write('./outputLog/rawResult', response.statusCode+"\t\t\t"+reqData.length+"\t\t\t"+data.length+"\t"+url+"\n", 'a')
 			fs.write('./outputLog/rawResult', "==================================================================\n"+data.replace(/[\t\s\n]/g,'')+"\n", 'a')
-			response.write(data)
-			response.close()
 		})
 
 	},

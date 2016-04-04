@@ -4,12 +4,17 @@ var system 	= require('system')
 var handler = require('./handler')
 
 function requestHandler(request, response){
-	switch(request.method){
-		case 'GET': handler.getRequestHandler(request, response)
-		break;
-		case 'POST': handler.postRequestHandler(request, response)
-		break;
-		default: handler.invalidRequestHandler(request, response)
+	if(/\?url/.test(request.url)){
+		switch(request.method){
+			case 'GET': handler.getRequestHandler(request, response)
+			break;
+			case 'POST': handler.postRequestHandler(request, response)
+			break;
+			default: handler.invalidRequestHandler(request, response)
+		}
+	}else{
+		response.statusCode = 404
+		response.close()
 	}
 }
 
@@ -20,7 +25,7 @@ function init(){
 	}else{
 		var port = system.args[1]
 
-		var listening = server.listen(port, requestHandler)
+		var listening = server.listen(port, {keepAlive: false}, requestHandler)
 
 		if(!listening){
 			console.log("Could not create webserver on port "+port)
