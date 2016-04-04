@@ -11,7 +11,7 @@ var utils = {
 	"formatQueryParams" : function(params){
 		var result = {}
 		var queryRegex = /\/\w*\?url=(.*)/
-		var url = params.match(queryRegex)[1]
+		var url = params.match(queryRegex)?params.match(queryRegex)[1]:""
 		url = decodeURIComponent(url)
 		result.url = url?decodeURIComponent(url):""
 		return result

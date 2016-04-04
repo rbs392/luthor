@@ -4,17 +4,12 @@ var system 	= require('system')
 var handler = require('./handler')
 
 function requestHandler(request, response){
-	if(/\?url/.test(request.url)){
-		switch(request.method){
-			case 'GET': handler.getRequestHandler(request, response)
-			break;
-			case 'POST': handler.postRequestHandler(request, response)
-			break;
-			default: handler.invalidRequestHandler(request, response)
-		}
-	}else{
-		response.statusCode = 404
-		response.close()
+	switch(request.method){
+		case 'GET': handler.getRequestHandler(request, response)
+		break;
+		case 'POST': handler.postRequestHandler(request, response)
+		break;
+		default: handler.invalidRequestHandler(request, response)
 	}
 }
 
