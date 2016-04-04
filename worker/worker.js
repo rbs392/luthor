@@ -81,8 +81,7 @@ function getHandler(url){
 }
 
 function postHandler(data, url){
-	page.setContent(data, url)
-	pageHandler(true)
+	page.open(url, 'POST', data, pageHandler)
 }
 
 function init(){
