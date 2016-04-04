@@ -1,6 +1,11 @@
 "use strict"
 var process = require('child_process')
+var fs 		= require('fs')
 var spawn 	= process.spawn
+
+//log to file
+fs.write('./outputLog/result', "statusCode"+"\t"+"actualsize"+"\t"+"outputsize"+"\t"+"URL"+"\n", 'a')
+
 
 var utils = {
 	"formatQueryParams" : function(params){
@@ -12,13 +17,12 @@ var utils = {
 		return result
 	},
 
-	"execWorker" : function(request, response, type, url, data){
+	"execWorker" : function(request, response, type, url, reqData){
 		var successdata = ""
 		var errordata 	= ""
 		var htmlPresent = false
-		var child 		= spawn('phantomjs', ["./worker/worker.js", type, url, data])
+		var child 		= spawn('phantomjs', ["./worker/worker.js", type, url, reqData])
 		utils.logger("START", url)
-
 
 		child.stdout.on("data", function(data){
 			if(/ERROR/.test(data)){
@@ -60,6 +64,9 @@ var utils = {
 				data = "No data recieved"
 				utils.logger("FAILURE", url)
 			}
+			fs.write('./outputLog/result', response.statusCode+"\t\t\t"+reqData.length+"\t\t\t"+data.length+"\t"+url+"\n", 'a')
+			fs.write('./outputLog/rawResult', response.statusCode+"\t\t\t"+reqData.length+"\t\t\t"+data.length+"\t"+url+"\n", 'a')
+			fs.write('./outputLog/rawResult', "==================================================================\n"+data.replace(/[\t\s\n]/g,'')+"\n", 'a')
 			response.write(data)
 			response.close()
 		})
