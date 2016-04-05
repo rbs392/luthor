@@ -27,7 +27,9 @@ const utils = {
 				}
 
 				if(htmlPresent){
-					successdata += data
+					if(!/SUCCESS/.test(data)){
+						successdata += data
+					}
 				}
 			}
 		})
