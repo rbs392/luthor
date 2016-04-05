@@ -1,32 +1,27 @@
 "use strict"
-var server 	= require('webserver').create() 
-var system 	= require('system')
-var handler = require('./handler')
+const process 		= require("process")
+const express 		= require("express")
+const bodyParser 	= require("body-parser")
+const handler 		= require("./handler")
+const compression 	= require("compression")
 
-function requestHandler(request, response){
-	switch(request.method){
-		case 'GET': handler.getRequestHandler(request, response)
-		break;
-		case 'POST': handler.postRequestHandler(request, response)
-		break;
-		default: handler.invalidRequestHandler(request, response)
-	}
-}
+const app 			= express()
+
+app.use(bodyParser.text({limit: '5mb', inflate: true, type: "text/html"}))
+
+app.get("/fetch", handler.getRequestHandler)
+app.post("/render", handler.postRequestHandler)
 
 function init(){
-	if(system.args.length!==2){
+	if(process.argv.length!==3){
 		console.log('Usage: server.js <some port>')
-	    phantom.exit(1)
+	    process.exit(1)
 	}else{
-		var port = system.args[1]
+		const port = process.argv[2]
 
-		var listening = server.listen(port, {keepAlive: false}, requestHandler)
-
-		if(!listening){
-			console.log("Could not create webserver on port "+port)
-			phantom.exit()
-		}
-		console.log("Server started at port "+ port)
+		app.listen(port, ()=>{
+			console.log("App started on port "+ port)
+		})
 	}
 }
 

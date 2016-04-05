@@ -1,54 +1,25 @@
 "use strict"
-var utils = require('./utils')
+const utils = require('./utils')
 
-var handler = {
+const handler = {
 	"postRequestHandler" : function(request, response){
-		var params = utils.formatQueryParams(request.url)
-		if(!params.url){
-			response.statusCode = 500
-			response.write("Invalid url query param")
-			response.close()
-			// utils.logger("ERROR", "Invalid url query param "+request.url)
-		}else if(!request.post){
-			response.statusCode = 500
-			response.write("Invalid post body - HTML required ")
-			response.close()
-			utils.logger("ERROR", "Invalid post body - HTML required for "+params.url)
-
+		if(!request.query.url){
+			utils.sendError(500, "Invalid url query params", request.url)
 		}else{
-			utils.execWorker(request, response, "post", params.url, request.post)
+			if(!request.body){
+				utils.sendError(500, "Invalid post data expected html recieved empty string", request.url)
+			}else{
+				utils.execWorker(request, response, 'post', request.query.url, request.body?request.body:"")
+			}
 		}
 	},
 
 	"getRequestHandler" : function(request, response){
-		if(/^\/health$/.test(request.url)){
-			handler.healthCheck(request, response)
+		if(!request.query.url){
+			utils.sendError(500, "Invalid url query params", request.url)
+		}else{
+			utils.execWorker(request, response, 'get', request.query.url, request.body?request.body:"")
 		}
-		else{
-			var params = utils.formatQueryParams(request.url)
-			if(!params.url){
-				response.statusCode = 500
-				response.write("Invalid url query param")
-				response.close()
-				// utils.logger("ERROR", "Invalid url query param "+request.url)
-			}else{
-				utils.execWorker(request, response, "get", params.url)
-			}
-		}
-
-	},
-
-	"invalidRequestHandler" : function(request, response){
-		response.statusCode = 500
-		response.write("Invalid operation use GET or POST method")
-		response.close()
-		utils.logger("ERROR", "Invalid operation use GET or POST method")
-	},
-
-	"healthCheck" : function(request, response) {
-		response.statusCode = 200
-	    response.write("{'status': 'OK'}")
-	    response.close()
 	}
 }
 

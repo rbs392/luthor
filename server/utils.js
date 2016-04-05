@@ -1,30 +1,17 @@
 "use strict"
-var process = require('child_process')
-var fs 		= require('fs')
-var spawn 	= process.spawn
+const process = require('child_process')
+const spawn 	= process.spawn
 
-//log to file
-fs.write('./outputLog/result', "statusCode"+"\t"+"actualsize"+"\t"+"outputsize"+"\t"+"URL"+"\n", 'a')
-
-
-var utils = {
-	"formatQueryParams" : function(params){
-		var result = {}
-		var queryRegex = /\/\w*\?url=(.*)/
-		var url = params.match(queryRegex)?params.match(queryRegex)[1]:""
-		url = decodeURIComponent(url)
-		result.url = url?decodeURIComponent(url):""
-		return result
-	},
-
+const utils = {
 	"execWorker" : function(request, response, type, url, reqData){
-		var successdata = ""
-		var errordata 	= ""
-		var htmlPresent = false
-		var child 		= spawn('phantomjs', ["./worker/worker.js", type, url, reqData])
+		let successdata = ""
+		let errordata 	= ""
+		let htmlPresent = false
+		let child 		= spawn('phantomjs', ["--config=config.json", "./worker/worker.js", type, url, reqData])
 		utils.logger("START", url)
 
 		child.stdout.on("data", function(data){
+			data = data.toString()
 			if(/ERROR/.test(data)){
 				utils.logger("FETCH INCOMPLETE", url)
 			}
@@ -43,39 +30,42 @@ var utils = {
 					successdata += data
 				}
 			}
-			
 		})
 
 		child.stderr.on("data", function(data){
+			data = data.toString()
 			errordata += data
 		})
-		child.on('exit', function(code){
-			var data = ""
+		child.on('close', function(code){
+			let data = ""
 			if(errordata){
-				response.statusCode = 500
+				response.status(500)
 				data = errordata
 				utils.logger("ERROR", errordata+ " : "+ url)
 			}else if(successdata){
-				response.statusCode = 200
+				response.status(200)
 				data = successdata
 				utils.logger("SUCCESS", url)
 			}else{
-				response.statusCode = 500
+				response.status(500)
 				data = "No data recieved"
 				utils.logger("FAILURE", url)
 			}
 			response.write(data)
-			response.close()
-			fs.write('./outputLog/result', response.statusCode+"\t\t\t"+reqData.length+"\t\t\t"+data.length+"\t"+url+"\n", 'a')
-			fs.write('./outputLog/rawResult', response.statusCode+"\t\t\t"+reqData.length+"\t\t\t"+data.length+"\t"+url+"\n", 'a')
-			fs.write('./outputLog/rawResult', "==================================================================\n"+data.replace(/[\t\s\n]/g,'')+"\n", 'a')
+			response.end()
 		})
 
 	},
 
 	"logger" : function(type, message){
-		var date = Date().toString()
+		let date = Date().toString()
 		console.log(date+" : "+type.toUpperCase()+" : "+message)
+	},
+
+	"sendError" : function(statusCode, msg, url){
+		response.status(statusCode)
+		response.send(`${msg} - ${url}`)
+		response.end()
 	}
 }
 

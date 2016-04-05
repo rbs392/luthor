@@ -9,7 +9,6 @@ var type	= system.args[1]
 var url 	= system.args[2]
 var data 	= system.args[3]
 
-
 var successMsg 	= "SUCCESS"
 var errorMsg 	= "ERROR"
 

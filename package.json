@@ -1,0 +1,28 @@
+{
+  "name": "luthor",
+  "version": "1.0.0",
+  "description": "web page rendering as a service",
+  "main": "start.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbs392/luthor.git"
+  },
+  "author": "rbs392",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rbs392/luthor/issues"
+  },
+  "homepage": "https://github.com/rbs392/luthor#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "compression": "^1.6.1",
+    "express": "^4.13.4"
+  }
+}
