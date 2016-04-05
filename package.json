@@ -23,6 +23,7 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "compression": "^1.6.1",
+    "connect-health-check": "^0.2.0",
     "express": "^4.13.4"
   }
 }

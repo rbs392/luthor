@@ -4,9 +4,11 @@ const express 		= require("express")
 const bodyParser 	= require("body-parser")
 const handler 		= require("./handler")
 const compression 	= require("compression")
+const healthCheck 	= require("connect-health-check")
 
 const app 			= express()
 
+app.use(healthCheck)
 app.use(bodyParser.text({limit: '5mb', inflate: true, type: "text/html"}))
 
 app.get("/fetch", handler.getRequestHandler)
